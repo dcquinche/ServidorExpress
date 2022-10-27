@@ -55,11 +55,35 @@ app.get('/api/products', (req, res) => {
     res.json(products);
   });
 
-  
+
 // 2. Information about the products request
 app.get('/info', (req, res) => {
     let date = new Date();
     res.send(`
     <h2>Our store has info for ${products.length} products</h2> 
     <h2>${date}</h2>`);
+  });
+
+
+// 3. Personal Information
+const person = {
+    name:"Diana Carolina Quinche Velez",
+    age: 25,
+    email: "dcquinche@gmail.com",
+    phone: "3015469863",
+    address: "Cl 64BC #103-209",
+    city: "Medellin",
+    links: [
+        {name: "LinkedIn", url: "https://www.linkedin.com/in/diana-carolina-quinche-v%C3%A9lez-06b9791b3/"},
+        {name: "GitHub", url: "https://github.com/dcquinche/"}],
+    skills: [
+        {name: "JavaScript", level: "Intermediate"},
+        {name: "React", level: "Beginner"},
+        {name: "Node", level: "Beginner"},
+        {name: "HTML", level: "Intermediate"}]
+    
+}
+
+app.get('/about', (req, res) => {
+    res.json(person);
   });
