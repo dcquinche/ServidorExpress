@@ -54,3 +54,12 @@ const products = [
 app.get('/api/products', (req, res) => {
     res.json(products);
   });
+
+  
+// 2. Information about the products request
+app.get('/info', (req, res) => {
+    let date = new Date();
+    res.send(`
+    <h2>Our store has info for ${products.length} products</h2> 
+    <h2>${date}</h2>`);
+  });
