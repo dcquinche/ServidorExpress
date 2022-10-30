@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
-
 app.listen(8080, () => console.log('Listening on port 8080!'));
+
 
 // 1. Products list
 const products = [
@@ -87,3 +87,50 @@ const person = {
 app.get('/about', (req, res) => {
     res.json(person);
   });
+
+
+//  4. Get a product by Id
+app.get('/api/products/:id', (req, res) => {
+  let idSelected = Number(req.params.id)
+  const product = products.find(product => product.id === idSelected)
+  if(!product){ //si es null
+    res.status(404).send("No se encuentra el producto requerido")
+  } else {
+    res.json(product)
+  }
+});
+
+// 5. Delete a product by id
+app.delete('/api/products/:id', (req, res) => {
+  const idSelected = Number(req.params.id)
+  const product = products.findIndex(product => product.id === idSelected)
+  products.splice(product, 1)
+  res.send("Se eliminó correctamente")
+});
+
+// 6. Add an item to the products 
+app.use(express.json()) // to use req.body
+app.post('/api/products', (req, res) => {
+  const newProduct = {
+    id: Math.floor(Math.random()*100),
+    title: req.body.title,
+    price: req.body.price
+  }
+
+  let resultSameTitle = false
+  for(let i=0; i<products.length; i++){
+    if(newProduct.title === products[i].title){
+      resultSameTitle = true
+    } 
+  }
+
+  if(newProduct.title === undefined || newProduct.price === undefined){
+    res.status(400).send("Falta definir las propiedades del producto")
+  } else if(resultSameTitle === true){
+    res.status(400).send("El titulo ya existe, crea uno nuevo")
+  } else {
+    products.push(newProduct)
+    res.send("Se ha creado exitosamente")
+  }
+});
+
