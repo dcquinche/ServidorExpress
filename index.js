@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 app.listen(8080, () => console.log('Listening on port 8080!'));
 
+// 7. Add middleware Morgan
+const morgan = require('morgan');
+app.use(morgan('tiny'));
+
 
 // 1. Products list
 const products = [
@@ -93,12 +97,13 @@ app.get('/about', (req, res) => {
 app.get('/api/products/:id', (req, res) => {
   let idSelected = Number(req.params.id)
   const product = products.find(product => product.id === idSelected)
-  if(!product){ //si es null
+  if(!product){ // null
     res.status(404).send("No se encuentra el producto requerido")
   } else {
     res.json(product)
   }
 });
+
 
 // 5. Delete a product by id
 app.delete('/api/products/:id', (req, res) => {
@@ -108,11 +113,12 @@ app.delete('/api/products/:id', (req, res) => {
   res.send("Se eliminó correctamente")
 });
 
+
 // 6. Add an item to the products 
-app.use(express.json()) // to use req.body
+app.use(express.json()); // to use req.body
 app.post('/api/products', (req, res) => {
   const newProduct = {
-    id: Math.floor(Math.random()*100),
+    id: Math.floor(Math.random()*1000),
     title: req.body.title,
     price: req.body.price
   }
